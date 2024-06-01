@@ -1,4 +1,3 @@
-
 ### -------- DATA PRE-PROCESSING -------------- ###
 
 # Library load
@@ -769,33 +768,33 @@ preprocess_cohort2_data <- function(HMPmetabolomics, HMPmetadata) {
   HMPdiet_replaced <- HMPdiet_replaced[, !(colnames(HMPdiet_replaced) == "Alcohol")]
   # ------
   
-  # Trim down the metadata
-  # -----------------------
-  
-  # Define the threshold for removing columns with one unique value
-  unique_threshold <- 1  # All values are the same
-  # Define the threshold for removing columns with more than 50% "NA" values
-  NA_threshold <- 0.5  # More than 50% "NA"
-  # Combine all removal operations in a single pipeline
-  HMPmetadata_selected_names <- HMPmetadata %>%
-    select(-where(~ n_distinct(.) <= unique_threshold)) %>%
-    select(-where(~ mean(. == "NA", na.rm = TRUE) > NA_threshold))
-  
-  # DIET IDs to remove
-  dietIDs_to_remove <- c(17:26, 28:37, 46)
-  
-  # Unnecessary columns to remove
-  unnecessary_columns_to_remove <- c(1:10, 55, 57:63)
-  
-  HMPmetadata_selected_names <- HMPmetadata_selected_names %>%
-    select(-all_of(union(dietIDs_to_remove, unnecessary_columns_to_remove)))
-  
-  HMPmetadata_names <- names(HMPmetadata_selected_names)
+  # # Trim down the metadata
+  # # -----------------------
+  # 
+  # # Define the threshold for removing columns with one unique value
+  # unique_threshold <- 1  # All values are the same
+  # # Define the threshold for removing columns with more than 50% "NA" values
+  # NA_threshold <- 0.5  # More than 50% "NA"
+  # # Combine all removal operations in a single pipeline
+  # HMPmetadata_selected_names <- HMPmetadata %>%
+  #   select(-where(~ n_distinct(.) <= unique_threshold)) %>%
+  #   select(-where(~ mean(. == "NA", na.rm = TRUE) > NA_threshold))
+  # 
+  # # DIET IDs to remove
+  # dietIDs_to_remove <- c(17:26, 28:37, 46)
+  # 
+  # # Unnecessary columns to remove
+  # unnecessary_columns_to_remove <- c(1:10, 55, 57:63)
+  # 
+  # HMPmetadata_selected_names <- HMPmetadata_selected_names %>%
+  #   select(-all_of(union(dietIDs_to_remove, unnecessary_columns_to_remove)))
+  # 
+  # HMPmetadata_names <- names(HMPmetadata_selected_names)
   # ------
   
   return(list(HMPdiet = HMPdiet_replaced,
               HMPmetabolomics = HMPmetabolomics, 
-              HMPmetadata = HMPmetadata_selected_names))
+              HMPmetadata = HMPmetadata))
 }
 
 # Function to impute, standardize, and transform Cohort 2 (HMP2 data) data
@@ -943,7 +942,9 @@ format_and_export_data <- function(data_list,
   # Export the metadata
   write.csv(BBmetadata[, c(1,2,4,5,10)], file = paste0(output_directory, "BBmetadata.csv"), row.names = TRUE) # only sections of interest
   write.csv(HMPmetadata, file = paste0(output_directory, "HMPmetadata.csv"), row.names = TRUE)
-  
+  write.csv(HMPmetadata[, c("Participant.ID", "week_num", "Age.at.diagnosis", "consent_age", "Label")], 
+            file = paste0(output_directory, "HMPmetadata_timepoint.csv"), row.names = TRUE)
+
   # Export the Diet Data
   write.csv(BBdiet, file = paste0(output_directory, "BBdiet.csv"), row.names = TRUE)
   write.csv(HMPdiet, file = paste0(output_directory, "HMPdiet.csv"), row.names = TRUE)
@@ -953,10 +954,12 @@ format_and_export_data <- function(data_list,
 #### ------------ BEGIN RUNNING -----------------
 #### --------------------------------------------
 
+# Uncomment to LOAD ALL PROCESSED DATA
+# load (file = "Data Preprocessing.RData")
 
 load_libraries()
 # >> input working directory path <<
-set_working_directory("C:/Users/lenovo/Documents/Serena/Paper/Scripts and Folders/R Processed Data")
+set_working_directory("C:/Users/lenovo/Documents/GitHub/XAIMetabolomeDiet/R Processed Data")
 
 # Step 1: Read data for Cohort 1 (UK Biobank)
 cohort1_data <- read_cohort1_data("../Cohort Data/UKBiobank Data/FeaturesData.csv", 
@@ -1021,4 +1024,4 @@ format_and_export_data(data_with_labels,
                        BBmetadata, HMPmetadata, BBdiet, HMPdiet, 
                        BBcor, HMPcor, BBCorrFeats, HMPCorrFeats, "")
 
-# save.image(file = "Data Preprocessing.RData")
+save.image(file = "Data Preprocessing Jan22 neat backup.RData")
