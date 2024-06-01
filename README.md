@@ -1,4 +1,6 @@
 
+DOI: https://doi.org/10.5281/zenodo.11408099
+
 This repository contains the scripts used for 
 - pre-processing the two datasets: UK Biobank, and HMP2 in R (Data Preprocessing.R),
 - performing metabolomics-based diagnostic prediction of IBD, applying SHAP XAI and performing diet-metabolite correlations in Python (ML-XAI-Diet.ipynb), and
