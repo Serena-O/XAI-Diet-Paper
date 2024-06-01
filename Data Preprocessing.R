@@ -954,8 +954,8 @@ format_and_export_data <- function(data_list,
 #### ------------ BEGIN RUNNING -----------------
 #### --------------------------------------------
 
-# Uncomment to LOAD ALL PROCESSED DATA
-# load (file = "Data Preprocessing.RData")
+# # Uncomment to LOAD ALL PROCESSED DATA to save time processing the UKBiobank data
+# load (file = "Data Preprocessing Jan22 neat backup.RData")
 
 load_libraries()
 # >> input working directory path <<
