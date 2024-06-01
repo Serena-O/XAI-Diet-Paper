@@ -6,7 +6,7 @@ This repository contains the scripts used for
 
 **Authors**
 
-- Serena Onwuka: Data Preprocessing.R, and ML-XAI-Diet.ipynb
+- Serena Onwuka ([ORCID: 0009-0000-3718-7559](https://orcid.org/0009-0000-3718-7559)): Data Preprocessing.R, and ML-XAI-Diet.ipynb
 - Laura Bravo-Merodio ([ORCID: 0000-0001-8878-8434](https://orcid.org/0000-0001-8878-8434)): ClassificationScript for LASSO-R.R, and LASSO-R.R
 
 **Acknowledgement**
