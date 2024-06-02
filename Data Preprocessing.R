@@ -351,7 +351,7 @@ preprocess_cohort1_data <- function(BBdata_metadata, BBdiagnosis_metadata) {
   BBdiet_numerical_robust_scaled <- as.data.frame(apply(BBdiet_numerical, 2, robust_scale))
   
   # to replace the category forms with numerically equivalent values
-  value_mapping <- list(
+  value_mapping <- c(
     `0` = 0, 
     `1` = 0.07, 
     `2` = 0.14, 
@@ -360,7 +360,12 @@ preprocess_cohort1_data <- function(BBdata_metadata, BBdiagnosis_metadata) {
     `5` = 1
   )
   
-  BBdiet_final <- cbind(BBdiet_numerical_robust_scaled, BBdiet_categorical)
+  # Apply the value mapping to the categorical data frame
+  # recode is used to replace categorical values with their numerical equivalents
+  BBdiet_categorical_mapped <- BBdiet_categorical %>% 
+    mutate(across(everything(), ~ recode(., !!!value_mapping)))
+  
+  BBdiet_final <- cbind(BBdiet_numerical_robust_scaled, BBdiet_categorical_mapped)
   # -----
   
   # Renaming BBdiet names
